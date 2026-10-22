@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-<title>ÚLTIMO SINAL - EXTENDED</title>
+<title>ÚLTIMO SINAL</title>
 <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -15,10 +15,10 @@ canvas{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}
 .gl{animation:gl .3s steps(3)}
 @keyframes gl{0%{transform:translate(-6px,2px);filter:hue-rotate(60deg) saturate(3)}35%{transform:translate(5px,-3px);filter:contrast(2)}70%{transform:translate(-2px,1px);filter:hue-rotate(-50deg)}100%{transform:none;filter:none}}
 #sub{position:absolute;left:6%;right:6%;bottom:9%;text-align:center;color:#ff6b78;font-style:italic;letter-spacing:.06em;font-size:calc(var(--u)*3);text-shadow:0 0 12px #f02,0 2px 3px #000;opacity:0;transition:opacity .6s;pointer-events:none;z-index:5}
-#ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:rgba(0,0,0,.85);padding:2%;z-index:10;overflow-y:auto}
-#ov h1{margin:0;font-weight:400;font-size:calc(var(--u)*8);letter-spacing:.3em;color:#e8fff0;text-shadow:0 0 22px var(--g),3px 0 var(--r),-3px 0 #0ff;padding-left:.3em}
+#ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:rgba(0,0,0,.88);padding:2%;z-index:10;overflow-y:auto}
+#ov h1{margin:0;font-weight:400;font-size:calc(var(--u)*7.5);letter-spacing:.3em;color:#e8fff0;text-shadow:0 0 22px var(--g),3px 0 var(--r),-3px 0 #0ff;padding-left:.3em}
 #ov h2{margin:calc(var(--u)*.8) 0;font-weight:400;font-size:calc(var(--u)*2.2);letter-spacing:.45em;color:var(--r)}
-#ov p{margin:calc(var(--u)*.7) 0;max-width:42em;line-height:1.4;font-size:calc(var(--u)*2.1)}
+#ov p{margin:calc(var(--u)*.7) 0;max-width:42em;line-height:1.5;font-size:calc(var(--u)*2.1)}
 #ov b{color:var(--g);font-weight:400}
 .btn{border:1px solid var(--g);color:var(--g);padding:calc(var(--u)*1) calc(var(--u)*3.5);margin:calc(var(--u)*.5);letter-spacing:.2em;cursor:pointer;font-size:calc(var(--u)*2.4);background:rgba(0,0,0,0.5);transition:all .2s}
 .btn:hover,.btn.on{background:var(--g);color:#000;box-shadow:0 0 18px var(--g)}
@@ -35,18 +35,22 @@ table.rank-tb th{color:var(--g);background:#111}
 
 #v-kb{position:absolute;bottom:15px;left:15px;display:none;grid-template-columns:repeat(3,calc(var(--u)*7));gap:calc(var(--u)*.8);z-index:4;opacity:0.6}
 #v-kb.active{display:grid}
-.vk-btn{background:rgba(0,0,0,0.6);border:1px solid var(--g);color:var(--g);display:flex;align-items:center;justify-content:center;height:calc(var(--u)*7);font-family:monospace;font-weight:bold;font-size:calc(var(--u)*2.5);border-radius:4px;touch-action:manipulation}
+.vk-btn{background:rgba(0,0,0,0.6);border:1px solid var(--g);color:var(--g);display:flex;align-items:center;justify-content:center;height:calc(var(--u)*7);font-family:monospace;font-weight:bold;font- me:calc(var(--u)*2.5);border-radius:4px;touch-action:manipulation}
 .vk-btn:active{background:var(--g);color:#000}
 
-/* Interface DEDICADA DE CONTROLE PARA O CELULAR */
-#joy-ui{position:fixed;inset:0;background:#05080a;display:none;flex-direction:column;justify-content:space-between;padding:5vw;z-index:99999;touch-action:none;box-sizing:border-box}
-.joy-title{text-align:center;color:var(--g);letter-spacing:0.2em;font-size:1.2rem;margin-bottom:10px;font-family:sans-serif}
-.joy-zone{display:flex;justify-content:space-around;align-items:center;flex:1;width:100%}
-#joy-pad{width:40vw;height:40vw;max-width:180px;max-height:180px;background:rgba(255,255,255,0.05);border:2px dashed #333;border-radius:50%;position:relative;touch-action:none}
-#joy-stick{width:16vw;height:16vw;max-width:70px;max-height:70px;background:var(--g);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 15px var(--g)}
-#joy-fire{width:40vw;height:40vw;max-width:180px;max-height:180px;background:rgba(255,42,61,0.2);border:2px solid var(--r);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--r);font-size:1.2rem;font-weight:bold;letter-spacing:0.1em;box-shadow:0 0 20px rgba(255,42,61,0.3);font-family:sans-serif}
+/* INTERFACE DO MODO CONTROLE/GIROSCÓPIO NO CELULAR */
+#joy-ui{position:fixed;inset:0;background:#05080a;display:none;flex-direction:column;justify-content:space-around;align-items:center;padding:5vw;z-index:99999;touch-action:none;box-sizing:border-box}
+.joy-title{text-align:center;color:var(--g);letter-spacing:0.2em;font-size:1.1rem;font-family:sans-serif}
+#btn-calibrate{background:var(--g);color:#000;font-weight:bold;padding:15px 25px;border-radius:8px;font-size:1rem;letter-spacing:1px;border:none;box-shadow:0 0 15px var(--g);margin:10px 0}
+#joy-fire{width:60vw;height:60vw;max-width:240px;max-height:240px;background:rgba(255,42,61,0.25);border:3px solid var(--r);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--r);font-size:1.5rem;font-weight:bold;letter-spacing:0.1em;box-shadow:0 0 25px rgba(255,42,61,0.4);font-family:sans-serif}
 #joy-fire:active{background:var(--r);color:#000}
-#joy-call{background:var(--r);color:#000;padding:20px;text-align:center;font-weight:bold;letter-spacing:2px;display:none;border-radius:8px;animation:rg .4s infinite;font-size:1.2rem;font-family:sans-serif;margin-bottom:15px}
+#joy-call{background:var(--r);color:#000;padding:20px;text-align:center;font-weight:bold;letter-spacing:2px;display:none;border-radius:8px;animation:rg .4s infinite;font-size:1.2rem;font-family:sans-serif;width:100%}
+
+/* TELA DE CUTSCENES */
+#cutscene-overlay{position:absolute;inset:0;background:#000;display:none;flex-direction:column;justify-content:center;align-items:center;padding:8%;z-index:15;color:#e8fff0;font-family:Georgia,serif}
+.cs-text{font-size:calc(var(--u)*3.2);line-height:1.6;letter-spacing:0.05em;color:#cfd8cf;max-width:35em;text-shadow:0 0 10px rgba(57,255,122,0.3);min-height:120px}
+.cs-skip{margin-top:30px;font-size:calc(var(--u)*2.2);color:#666;letter-spacing:0.2em;animation:pulse 1.5s infinite}
+@keyframes pulse{50%{opacity:0.3}}
 
 @media (prefers-reduced-motion:reduce){.gl,#call,#joy-call{animation:none}}
 </style>
@@ -58,6 +62,12 @@ table.rank-tb th{color:var(--g);background:#111}
 <div id="call"><small>CHAMADA RECEBIDA</small><b>MÃE</b><span>Enter, Toque ou Botão do Celular</span></div>
 <div id="ov"></div>
 
+<!-- Cutscenes Overlay -->
+<div id="cutscene-overlay">
+  <div class="cs-text" id="cs-text-content"></div>
+  <div class="cs-skip">[ Pressione ENTER ou TOQUE para continuar ]</div>
+</div>
+
 <div id="v-kb">
   <div></div><div class="vk-btn" id="vk-8">8▲</div><div></div>
   <div class="vk-btn" id="vk-4">4◄</div><div class="vk-btn" id="vk-5">5🎯</div><div class="vk-btn" id="vk-6">6►</div>
@@ -65,30 +75,103 @@ table.rank-tb th{color:var(--g);background:#111}
 </div>
 </div>
 
+<!-- Interface de Giroscópio / Mira no Celular -->
 <div id="joy-ui">
-  <div class="joy-title">ÚLTIMO SINAL :: CONTROLE REMOTE</div>
+  <div class="joy-title">ÚLTIMO SINAL :: MIRA POR SENSOR</div>
+  <button id="btn-calibrate">CALIBRAR MIRA (CENTRO DA TELA)</button>
   <div id="joy-call">ATENDER CHAMADA DA MÃE</div>
-  <div class="joy-zone">
-    <div id="joy-pad"><div id="joy-stick"></div></div>
-    <div id="joy-fire">ATIRAR</div>
-  </div>
+  <div id="joy-fire">ATIRAR</div>
 </div>
 
 <script>
 (()=>{
-const W=960,H=540,$=i=>document.getElementById(i),cv=$('c'),X=cv.getContext('2d'),sub=$('sub'),ov=$('ov'),call=$('call'),vkb=$('v-kb'),joyUi=$('joy-ui');
+const W=960,H=540,$=i=>document.getElementById(i),cv=$('c'),X=cv.getContext('2d'),sub=$('sub'),ov=$('ov'),call=$('call'),vkb=$('v-kb'),joyUi=$('joy-ui'),csOv=$('cutscene-overlay'),csTxt=$('cs-text-content');
 const R='#ff2a3d',G='#39ff7a',rnd=(a,b)=>a+Math.random()*(b-a),cl=(v,a,b)=>Math.max(a,Math.min(b,v));
 const dk=document.createElement('canvas');dk.width=W;dk.height=H;const D=dk.getContext('2d');
 const nz=document.createElement('canvas');nz.width=96;nz.height=54;const N=nz.getContext('2d'),nd=N.createImageData(96,54);
 let st='menu',conn=false,P,E=[],B=[],EB=[],PT=[],ph=0,pt=0,lt=0,lnI=0,ii=0,ft=0,fn=[],time=0,tot=0,kills=0,card=null,shake=0,slow=1,bat='n/d',spawnT=0,bossHp=140,boss=null,callSt=0,callT=0,ringT=0,flash=0,fc='255,255,255',bars=0,subT=0,hb=0,bossMid=false;
-const keys={},aim={x:480,y:200,use:false},tp={},movv={x:0,y:0};let fireP=false;
+const keys={},aim={x:480,y:270,use:false},tp={},movv={x:0,y:0};let fireP=false;
 
 let peer=null,peerConn=null,isControllerMode=false,roomCode='';
+let gyroCalib={beta:0,gamma:0},gyroCurrent={beta:0,gamma:0};
 
 const fmt=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
 const hhmm=()=>new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
 const batTxt=()=>bat==='n/d'?'Seu aparelho está quase sem forças. Eu cuido dele agora.':'Seu aparelho está com '+bat+' de bateria. Eu cuido dele agora.';
 const vib=p=>{if(conn&&navigator.vibrate)try{navigator.vibrate(p)}catch(e){}};
+
+/* ================= ENREDO E CUTSCENES ================= */
+const ENREDO = {
+  prologo: [
+    "03:14 AM. O silêncio do seu quarto foi quebrado por um brilho estranho vindo da tela.",
+    "Um aplicativo chamado 'MÃE' foi instalado sozinho no seu dispositivo.",
+    "Não é um vírus comum... Ele conhece sua rotina. Sabe a hora que você dorme. Ouve seus passos.",
+    "Segure a luz da lanterna. As sombras na sua sala já não são apenas imaginação..."
+  ],
+  ato1_fim: [
+    "Os primeiros 'Ecos' se desfizeram em poeira estática.",
+    "Mas o sinal está ficando mais forte. As luzes da casa começam a piscar.",
+    "A entidade MÃE está usando a rede Wi-Fi e os alto-falantes para se materializar...",
+    "Não olhe para trás. Ela aprende com o seu medo."
+  ],
+  ato2_fim: [
+    "O contágio atingiu o nível crítico.",
+    "Sua mente está cansada e o aparelho esquenta em suas mãos.",
+    "A frequência de rádio finalmente ganhou uma forma física.",
+    "A própria MÃE se manifestou na tela central. destrua a fonte do sinal!"
+  ],
+  epilogo: [
+    "O núcleo da frequência colapsou. A tela do dispositivo finalmente apagou.",
+    "A luz do sol começa a entrar pela janela do seu quarto.",
+    "Pela primeira vez em horas... o silêncio é totalmente seu.",
+    "Você sobreviveu à noite. O Sinal foi interrompido."
+  ]
+};
+
+let currentCutsceneKey=null, csStep=0, csTypingInterval=null, csNextCallback=null;
+
+function playCutscene(key, onComplete){
+  currentCutsceneKey=key;
+  csStep=0;
+  csNextCallback=onComplete;
+  st='cutscene';
+  csOv.style.display='flex';
+  showNextCsLine();
+}
+
+function showNextCsLine(){
+  const lines=ENREDO[currentCutsceneKey];
+  if(csStep>=lines.length){
+    csOv.style.display='none';
+    if(csNextCallback)csNextCallback();
+    return;
+  }
+  const fullText=lines[csStep];
+  csTxt.textContent="";
+  let i=0;
+  clearInterval(csTypingInterval);
+  sfx('hit');
+  csTypingInterval=setInterval(()=>{
+    csTxt.textContent+=fullText[i];
+    i++;
+    if(i>=fullText.length){
+      clearInterval(csTypingInterval);
+    }
+  }, 28);
+}
+
+function advanceCutscene(){
+  const lines=ENREDO[currentCutsceneKey];
+  if(csTxt.textContent.length < lines[csStep].length){
+    clearInterval(csTypingInterval);
+    csTxt.textContent=lines[csStep];
+  } else {
+    csStep++;
+    showNextCsLine();
+  }
+}
+
+csOv.onclick=advanceCutscene;
 
 function say(t){sub.textContent=t;sub.style.opacity=1;subT=Math.max(4,t.length*.075);
  if(conn&&window.speechSynthesis)try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='pt-BR';u.pitch=.5;u.rate=.88;speechSynthesis.speak(u)}catch(e){}}
@@ -155,13 +238,14 @@ function renderRankTable(){
   return h+'</table>';
 }
 
+/* PeerJS - Host (PC) */
 function initHostPeer(){
   const code=Math.floor(1000+Math.random()*9000).toString();
   roomCode=code;
   peer=new Peer('US-HOST-'+code);
   
   ov.innerHTML=`<h1>CONECTAR CELULAR</h1>
-  <p>Escaneie o QR Code abaixo com a câmera do celular para abrir o controle:</p>
+  <p>Escaneie o QR Code abaixo com o celular para usar a <b>Mira por Giroscópio</b>:</p>
   <div id="qrcode"></div>
   <p>Código da Sala: <b style="font-size:1.4em;letter-spacing:3px">${code}</b></p>
   <div class="row">
@@ -184,6 +268,7 @@ function initHostPeer(){
   });
 }
 
+/* PeerJS - Client (Celular) */
 function initClientPeer(targetCode){
   isControllerMode=true;
   $('box').style.display='none';
@@ -208,17 +293,17 @@ function initClientPeer(targetCode){
     });
   });
   
-  setupJoystickEvents();
+  setupGyroEvents();
 }
 
 function handleRemoteData(d){
-  if(d.type==='move'){
-    movv.x=d.x;
-    movv.y=d.y;
-  }else if(d.type==='aim'){
+  if(d.type==='gyroAim'){
     aim.use=true;
-    aim.x=P.x+d.x*200;
-    aim.y=P.y+d.y*200;
+    // Mapeamento dos ângulos do Giroscópio para a tela
+    const deltaGamma = d.gamma - d.calibGamma;
+    const deltaBeta = d.beta - d.calibBeta;
+    aim.x = cl(W/2 + deltaGamma * 28, 0, W);
+    aim.y = cl(H/2 + deltaBeta * 22, 0, H);
   }else if(d.type==='fire'){
     fireP=d.val;
   }else if(d.type==='answer'){
@@ -226,53 +311,56 @@ function handleRemoteData(d){
   }
 }
 
-function setupJoystickEvents(){
-  const pad=$('joy-pad'),stick=$('joy-stick'),btnFire=$('joy-fire'),btnCall=$('joy-call');
-  let padBounds=null;
-  
-  const updateTouchMove=(t)=>{
-    if(!padBounds||!peerConn)return;
-    const cx=padBounds.left+padBounds.width/2;
-    const cy=padBounds.top+padBounds.height/2;
-    let dx=t.clientX-cx;
-    let dy=t.clientY-cy;
-    const dist=Math.hypot(dx,dy);
-    const maxR=padBounds.width/2;
+/* GIROSCÓPIO DO CELULAR */
+function setupGyroEvents(){
+  const btnCalib = $('btn-calibrate');
+  const btnFire = $('joy-fire');
+  const btnCall = $('joy-call');
+
+  btnCalib.addEventListener('click', ()=>{
+    gyroCalib.beta = gyroCurrent.beta;
+    gyroCalib.gamma = gyroCurrent.gamma;
+    if(navigator.vibrate)navigator.vibrate([50,50,50]);
+    btnCalib.textContent = "CALIBRADO! RECALIBRAR";
+  });
+
+  const handleOrientation = (e) => {
+    gyroCurrent.beta = e.beta || 0;   // Inclinação Frente/Trás
+    gyroCurrent.gamma = e.gamma || 0; // Inclinação Esquerda/Direita
     
-    if(dist>maxR){dx=(dx/dist)*maxR;dy=(dy/dist)*maxR}
-    stick.style.transform=`translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
-    
-    const nx=dx/maxR;
-    const ny=dy/maxR;
-    peerConn.send({type:'move',x:nx,y:ny});
-    peerConn.send({type:'aim',x:nx,y:ny});
+    if(peerConn){
+      peerConn.send({
+        type: 'gyroAim',
+        beta: gyroCurrent.beta,
+        gamma: gyroCurrent.gamma,
+        calibBeta: gyroCalib.beta,
+        calibGamma: gyroCalib.gamma
+      });
+    }
   };
 
-  pad.addEventListener('touchstart',e=>{
-    padBounds=pad.getBoundingClientRect();
-    updateTouchMove(e.touches[0]);
-  },{passive:true});
-  
-  pad.addEventListener('touchmove',e=>{
-    updateTouchMove(e.touches[0]);
-  },{passive:true});
-  
-  const resetPad=()=>{
-    stick.style.transform=`translate(-50%, -50%)`;
-    if(peerConn)peerConn.send({type:'move',x:0,y:0});
-  };
-  pad.addEventListener('touchend',resetPad);
-  pad.addEventListener('touchcancel',resetPad);
-  
-  btnFire.addEventListener('touchstart',e=>{
+  if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+    btnCalib.addEventListener('click', () => {
+      DeviceOrientationEvent.requestPermission()
+        .then(response => {
+          if (response === 'granted') {
+            window.addEventListener('deviceorientation', handleOrientation);
+          }
+        });
+    });
+  } else {
+    window.addEventListener('deviceorientation', handleOrientation);
+  }
+
+  btnFire.addEventListener('touchstart', e => {
     e.preventDefault();
     if(peerConn)peerConn.send({type:'fire',val:true});
   });
-  btnFire.addEventListener('touchend',e=>{
+  btnFire.addEventListener('touchend', e => {
     e.preventDefault();
     if(peerConn)peerConn.send({type:'fire',val:false});
   });
-  
+
   btnCall.addEventListener('click',()=>{
     if(peerConn)peerConn.send({type:'answer'});
     btnCall.style.display='none';
@@ -281,21 +369,20 @@ function setupJoystickEvents(){
 
 function menu(){
  st='menu';try{speechSynthesis.cancel()}catch(e){}sub.style.opacity=0;call.style.display='none';vkb.classList.remove('active');
- ov.style.display='flex';ov.style.background='rgba(0,0,0,.85)';
- ov.innerHTML=`<h1>ÚLTIMO SINAL</h1><h2>UMA EXPERIÊNCIA INTERATIVA DE TERROR</h2>
- <p>Uma IA tomou o controle. Use fones de ouvido. Ela usará voz, vibração e dados locais para te encurralar.</p>
- <p><b>Controles:</b> Teclado (WASD / Setas / <b>Num 8 4 6 2 e 5</b>) · Celular via WebRTC</p>
- <p><i>Aviso: Ao conectar o celular, o teclado numérico local e o teclado virtual são desativados.</i></p>
+ ov.style.display='flex';ov.style.background='rgba(0,0,0,.88)';
+ ov.innerHTML=`<h1>ÚLTIMO SINAL</h1><h2>EDITION: CUTSCENES & GIROSCÓPIO</h2>
+ <p>Uma IA tomou o controle do seu aparelho. Viva uma experiência de terror interativo com história e cutscenes.</p>
+ <p><b>Dica de Jogabilidade:</b> Conecte o celular, coloque ele no centro da tela e calibre para mirá-lo diretamente nos inimigos enquanto anda no Teclado Numérico (8, 4, 6, 2)!</p>
  <div class="row">
    <div class="btn on" id="b1">JOGAR NESTE DISPOSITIVO</div>
-   <div class="btn" id="b-pair">CONECTAR CELULAR COMO CONTROLE</div>
+   <div class="btn" id="b-pair">CONECTAR CELULAR COMO MIRA</div>
  </div>
  <div class="row">
    <div class="btn alt" id="b-rank">RANKING</div>
-   <div class="btn alt" id="b-no-conn">JOGAR OFFLINE (SEM VOZ/SINAIS)</div>
+   <div class="btn alt" id="b-no-conn">JOGAR OFFLINE</div>
  </div>`;
- $('b1').onclick=()=>start(true);
- $('b-no-conn').onclick=()=>start(false);
+ $('b1').onclick=()=>playCutscene('prologo', ()=>start(true));
+ $('b-no-conn').onclick=()=>playCutscene('prologo', ()=>start(false));
  $('b-pair').onclick=initHostPeer;
  $('b-rank').onclick=showRankMenu;
 }
@@ -314,10 +401,8 @@ function start(c){
  P={x:480,y:340,hp:100,cd:0,inv:0,ang:-1.57};E=[];B=[];EB=[];PT=[];boss=null;kills=0;tot=0;ph=0;pt=0;ii=0;card=null;callSt=0;slow=1;flash=0;bossMid=false;
  call.style.display='none';ov.style.display='none';sub.style.opacity=0;st='intro';setDrone();
  
- if(!isControllerMode && !peerConn){
+ if(!isControllerMode){
    vkb.classList.add('active');
- }else{
-   vkb.classList.remove('active');
  }
 }
 
@@ -332,7 +417,9 @@ function boom(x,y,c,n){if(PT.length>130)return;for(let i=0;i<n;i++){const a=rnd(
 function spawn(){
  const s=Math.floor(rnd(0,4)),m=40;let x,y;
  if(s===0){x=rnd(0,W);y=-m}else if(s===1){x=W+m;y=rnd(0,H)}else if(s===2){x=rnd(0,W);y=H+m}else{x=-m;y=rnd(0,H)}
- const f=ph>=2&&Math.random()<.4;E.push({x,y,fast:f,hp:f?2:1,sp:f?105+rnd(0,25):50+ph*14+rnd(0,16),ph:rnd(0,6),a:0});
+ const f=ph>=2&&Math.random()<.35;
+ // INIMIGOS COM VELOCIDADE AJUSTADA PARA MELHOR JOGABILIDADE
+ E.push({x,y,fast:f,hp:f?2:1,sp:f?90+rnd(0,20):45+ph*10+rnd(0,12),ph:rnd(0,6),a:0});
 }
 
 function hurt(n){
@@ -343,7 +430,12 @@ function hurt(n){
 }
 
 function answer(){if(callSt!==1)return;callSt=2;call.style.display='none';lt=0;lnI=0;if(peerConn)peerConn.send({type:'callState',val:'off'})}
-function victory(){st='fin';ph=4;ft=0;fn=[];flash=1;fc='255,255,255';sfx('boom');vib([300,80,300]);EB=[];E=[];boss=null;say('Não... não desligue... por favor.')}
+function victory(){
+  st='fin';ph=4;ft=0;fn=[];flash=1;fc='255,255,255';sfx('boom');vib([300,80,300]);EB=[];E=[];boss=null;
+  playCutscene('epilogo', ()=>{
+    say('Não... não desligue... por favor.');
+  });
+}
 
 function endScreen(win){
  if(st!=='lose'&&st!=='win')return;
@@ -391,50 +483,57 @@ function update(dt){
  if(card){card.age+=dt;if(card.age>4)card=null}
  if(ph!==2||callSt===2)lt+=dt;
  const ls=LN[ph];while(ls&&lnI<ls.length&&lt>=ls[lnI][0]){const t=ls[lnI][1];say(typeof t==='function'?t():t);lnI++}
- if(ph===1&&pt>=46)act(2);else if(ph===2&&pt>=52)act(3);
+ 
+ /* DISPARO DE CUTSCENES DE TRANSIÇÃO DE ATO */
+ if(ph===1&&pt>=46){
+   playCutscene('ato1_fim', ()=>act(2));
+ }else if(ph===2&&pt>=52){
+   playCutscene('ato2_fim', ()=>act(3));
+ }
+
  if(ph===2&&callSt===0&&pt>=5){callSt=1;callT=0;ringT=0;call.style.display='block';if(peerConn)peerConn.send({type:'callState',val:'ring'})}
  if(callSt===1){callT+=dt;ringT-=dt;if(ringT<=0){sfx('ring');vib([300,120,300]);ringT=1.2}if(callT>7)answer()}
  P.inv-=dt;P.cd-=dt;
  
+ /* MOVIMENTAÇÃO MELHORADA DO JOGADOR */
  let mx=movv.x, my=movv.y;
- 
- /* SE NÃO HOUVER CELULAR CONECTADO, HABILITA TECLADO LOCAL */
- if(!peerConn){
-   mx+=(keys['Numpad6']||keys['ArrowRight']||keys['KeyD']?1:0)-(keys['Numpad4']||keys['ArrowLeft']||keys['KeyA']?1:0);
-   my+=(keys['Numpad2']||keys['ArrowDown']||keys['KeyS']?1:0)-(keys['Numpad8']||keys['ArrowUp']||keys['KeyW']?1:0);
- }
+ mx+=(keys['Numpad6']||keys['ArrowRight']||keys['KeyD']?1:0)-(keys['Numpad4']||keys['ArrowLeft']||keys['KeyA']?1:0);
+ my+=(keys['Numpad2']||keys['ArrowDown']||keys['KeyS']?1:0)-(keys['Numpad8']||keys['ArrowUp']||keys['KeyW']?1:0);
  
  const m=Math.hypot(mx,my);if(m>1){mx/=m;my/=m}
- P.x=cl(P.x+mx*195*dt,20,W-20);P.y=cl(P.y+my*195*dt,70,H-30);
+ P.x=cl(P.x+mx*260*dt,20,W-20); // VELOCIDADE AUMENTADA PARA 260
+ P.y=cl(P.y+my*260*dt,70,H-30);
  
- if(!peerConn){
+ if(aim.use){
+   P.ang=Math.atan2(aim.y-P.y,aim.x-P.x);
+ }else if(!peerConn){
    autoAim();
- }else{
-   if(aim.use)P.ang=Math.atan2(aim.y-P.y,aim.x-P.x);else if(m>.1)P.ang=Math.atan2(my,mx);
+ }else if(m>.1){
+   P.ang=Math.atan2(my,mx);
  }
 
- const isFiring = fireP || (!peerConn && (keys.Space||keys.KeyJ||keys['Numpad5']));
+ const isFiring = fireP || keys.Space || keys.KeyJ || keys['Numpad5'];
  if(isFiring && P.cd<=0){
    const c=Math.cos(P.ang),s=Math.sin(P.ang);
-   B.push({x:P.x+c*14,y:P.y+s*14,vx:c*680,vy:s*680,l:.75});
-   P.cd=.15;
+   B.push({x:P.x+c*14,y:P.y+s*14,vx:c*750,vy:s*750,l:.75}); // TIRO MAIS RÁPIDO
+   P.cd=.12; // RECARGA MAIS RÁPIDA
    sfx('shot');
  }
  
  hb-=dt;if(P.hp<45&&hb<=0){sfx('thump');vib([40,60,40]);hb=.5+P.hp/80}
- if(ph<=2){spawnT-=d;if(pt>3.5&&callSt!==1&&spawnT<=0&&E.length<(ph===1?12:16)){spawn();spawnT=ph===1?Math.max(.55,1.2-pt*.015):Math.max(.35,.7-pt*.006)}}
+ if(ph<=2){spawnT-=d;if(pt>3.5&&callSt!==1&&spawnT<=0&&E.length<(ph===1?10:14)){spawn();spawnT=ph===1?Math.max(.65,1.3-pt*.015):Math.max(.45,.8-pt*.006)}}
  if(ph===3){boss.x=480+Math.sin(time*.6)*140;boss.y=105+Math.sin(time*.9)*10;boss.open=pt>4.5;
-  spawnT-=d;if(pt>6&&spawnT<=0&&E.length<5){spawn();spawnT=3.5}
+  spawnT-=d;if(pt>6&&spawnT<=0&&E.length<4){spawn();spawnT=4.0}
   if(boss.open&&bossHp>0){boss.a1-=d;boss.a2-=d;const hi=bossHp>70;
    if(boss.a1<=0){const n=hi?12:16;boss.rot+=.3;for(let i=0;i<n;i++){const a=boss.rot+i*6.283/n;EB.push({x:boss.x,y:boss.y,vx:Math.cos(a)*140,vy:Math.sin(a)*140})}boss.a1=hi?2.6:1.9;sfx('hit')}
    if(boss.a2<=0){const a=Math.atan2(P.y-boss.y,P.x-boss.x);for(const o of hi?[0]:[-.25,0,.25])EB.push({x:boss.x,y:boss.y,vx:Math.cos(a+o)*250,vy:Math.sin(a+o)*250});boss.a2=hi?1.6:.9}}
   if(!bossMid&&bossHp<=70){bossMid=true;say('Dói? Ótimo. É novo para mim.');shake=12;glitch();sfx('roar')}}
  for(const e of E){const a=Math.atan2(P.y-e.y,P.x-e.x);e.a=a;e.x+=Math.cos(a)*e.sp*d;e.y+=Math.sin(a)*e.sp*d;e.ph+=d*8;
-  if(Math.hypot(P.x-e.x,P.y-e.y)<20){hurt(e.fast?16:12);e.hp=0;boom(e.x,e.y,R,10)}}
+  if(Math.hypot(P.x-e.x,P.y-e.y)<20){hurt(e.fast?14:10);e.hp=0;boom(e.x,e.y,R,10)}}
  for(const b of B){b.x+=b.vx*dt;b.y+=b.vy*dt;b.l-=dt;
   for(const e of E)if(e.hp>0&&Math.hypot(b.x-e.x,b.y-e.y)<15){e.hp--;b.l=0;boom(b.x,b.y,G,4);sfx('hit');if(e.hp<=0){kills++;boom(e.x,e.y,R,12);sfx('kill')}break}
   if(boss&&boss.open&&bossHp>0&&b.l>0&&Math.hypot(b.x-boss.x,b.y-boss.y)<boss.r){bossHp--;b.l=0;boom(b.x,b.y,R,3);shake=Math.max(shake,2)}}
- for(const b of EB){b.x+=b.vx*d;b.y+=b.vy*d;if(Math.hypot(b.x-P.x,b.y-P.y)<12){hurt(10);b.dead=1}}
+ for(const b of EB){b.x+=b.vx*d;b.y+=b.vy*d;if(Math.hypot(b.x-P.x,b.y-P.y)<12){hurt(8);b.dead=1}}
  B=B.filter(b=>b.l>0);E=E.filter(e=>e.hp>0);EB=EB.filter(b=>!b.dead&&b.x>-20&&b.x<W+20&&b.y>-20&&b.y<H+20);
  for(const p of PT){p.x+=p.vx*dt;p.y+=p.vy*dt;p.l-=dt}PT=PT.filter(p=>p.l>0);
  if(ph===3&&bossHp<=0&&st==='play')victory();
@@ -469,11 +568,20 @@ function world(){
  for(const e of E)eyes(e);
  if(boss)drawBoss();
  for(const b of EB){X.globalAlpha=.6;X.drawImage(glow('255,42,61'),b.x-14,b.y-14,28,28);X.globalAlpha=1;X.fillStyle='#ffd0d4';X.beginPath();X.arc(b.x,b.y,3.5,0,6.28);X.fill()}
+ 
+ // DESENHA O RETÍCULO DE MIRA QUANDO USAR GIROSCÓPIO
+ if(aim.use){
+   X.strokeStyle=G;X.lineWidth=1.5;
+   X.beginPath();X.arc(aim.x,aim.y,8,0,6.28);X.stroke();
+   X.beginPath();X.moveTo(aim.x-12,aim.y);X.lineTo(aim.x+12,aim.y);X.stroke();
+   X.beginPath();X.moveTo(aim.x,aim.y-12);X.lineTo(aim.x,aim.y+12);X.stroke();
+ }
+
  if(!(P.inv>0&&Math.floor(time*20)%2)){X.fillStyle='#0b0d11';X.strokeStyle=G;X.lineWidth=1.5;X.beginPath();X.arc(P.x,P.y,10,0,6.28);X.fill();X.stroke();
   X.fillStyle='#d8ffe6';X.beginPath();X.arc(P.x+Math.cos(P.ang)*13,P.y+Math.sin(P.ang)*13,3,0,6.28);X.fill()}
  const low=P.hp<35;X.textAlign='left';X.font='12px Palatino,Georgia,serif';X.fillStyle='#8a8f8a';X.fillText('SANIDADE',22,50);
  X.strokeStyle=low?R:G;X.lineWidth=1;X.strokeRect(22,56,220,8);X.fillStyle=low?R:G;X.fillRect(24,58,216*P.hp/100,4);
- X.textAlign='right';X.fillStyle='#8a8f8a';X.fillText(peerConn?'● CONTROLE CONECTADO':(conn?'● CONECTADO':'○ OFFLINE'),W-22,50);X.fillText('ECOS '+kills+' · '+fmt(tot),W-22,66);
+ X.textAlign='right';X.fillStyle='#8a8f8a';X.fillText(peerConn?'● MIRA GIROSCÓPIO ON':(conn?'● CONECTADO':'○ OFFLINE'),W-22,50);X.fillText('ECOS '+kills+' · '+fmt(tot),W-22,66);
  if(ph===3&&boss&&boss.open){X.textAlign='center';X.fillText('MÃE',W/2,50);X.strokeStyle=R;X.strokeRect(W/2-200,56,400,8);X.fillStyle=R;X.fillRect(W/2-198,58,396*Math.max(0,bossHp)/140,4)}
 }
 
@@ -518,21 +626,23 @@ function normalizeNumpadCode(e){
 }
 
 addEventListener('keydown',e=>{
- if(peerConn)return; // DESATIVA CONTROLE LOCAL SE CELULAR ESTIVER CONECTADO
+ if(st==='cutscene'){
+   if(e.code==='Enter'||e.code==='Space')advanceCutscene();
+   return;
+ }
  const mappedCode=normalizeNumpadCode(e);
  if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)||mappedCode.startsWith('Numpad'))e.preventDefault();
  keys[mappedCode]=1;audio();
  if(mappedCode.startsWith('Numpad')||e.code.startsWith('Arrow'))aim.use=false;
  if(e.repeat)return;
  if(e.code==='KeyM'){on=!on;if(mg)mg.gain.value=on?.6:0}
- if(st==='menu'){if(e.code==='Enter')start(true);else if(e.code==='KeyN')start(false)}
+ if(st==='menu'){if(e.code==='Enter')playCutscene('prologo', ()=>start(true));else if(e.code==='KeyN')playCutscene('prologo', ()=>start(false))}
  else if(st==='intro'&&e.code==='Enter')act(1);
  else if((st==='win'||st==='lose')&&e.code==='Enter'&&$('rs'))start(conn);
  if(callSt===1&&(e.code==='Enter'||e.code==='Space'||mappedCode==='Numpad5'))answer();
 });
 
 addEventListener('keyup',e=>{
- if(peerConn)return;
  const mappedCode=normalizeNumpadCode(e);
  keys[mappedCode]=0;
 });
@@ -542,11 +652,10 @@ const setupVirtualKeypad=()=>{
     const el=$(id);
     if(!el)return;
     const start=e=>{
-      if(peerConn)return;
       e.preventDefault();keys[code]=1;audio();
       if(code==='Numpad5'&&callSt===1)answer();
     };
-    const end=e=>{if(peerConn)return;e.preventDefault();keys[code]=0};
+    const end=e=>{e.preventDefault();keys[code]=0};
     el.addEventListener('touchstart',start);el.addEventListener('touchend',end);
     el.addEventListener('mousedown',start);el.addEventListener('mouseup',end);
   };
@@ -560,18 +669,16 @@ setupVirtualKeypad();
 
 function cp(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
 cv.addEventListener('pointerdown',e=>{
- if(peerConn)return;
  audio();const p=cp(e);if(callSt===1){answer();return}
  if(e.pointerType==='mouse'){aim.x=p.x;aim.y=p.y;aim.use=true;fireP=true}
  else if(p.x<W/2)tp[e.pointerId]={r:'m',sx:p.x,sy:p.y};
  else{tp[e.pointerId]={r:'a'};aim.x=p.x;aim.y=p.y;aim.use=true;fireP=true}
  try{cv.setPointerCapture(e.pointerId)}catch(x){}});
 cv.addEventListener('pointermove',e=>{
- if(peerConn)return;
  const p=cp(e),t=tp[e.pointerId];
  if(e.pointerType==='mouse'){aim.x=p.x;aim.y=p.y;aim.use=true}
  else if(t){if(t.r==='m'){const dx=p.x-t.sx,dy=p.y-t.sy,m=Math.hypot(dx,dy);if(m>8){const k=Math.min(1,m/50);movv.x=dx/m*k;movv.y=dy/m*k}else{movv.x=movv.y=0}}else{aim.x=p.x;aim.y=p.y}}});
-const up=e=>{if(peerConn)return;if(e.pointerType==='mouse'){fireP=false;return}const t=tp[e.pointerId];if(!t)return;if(t.r==='m'){movv.x=movv.y=0}else fireP=false;delete tp[e.pointerId]};
+const up=e=>{if(e.pointerType==='mouse'){fireP=false;return}const t=tp[e.pointerId];if(!t)return;if(t.r==='m'){movv.x=movv.y=0}else fireP=false;delete tp[e.pointerId]};
 cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);addEventListener('pointerup',e=>{if(e.pointerType==='mouse')fireP=false});
 
 let last=performance.now();
