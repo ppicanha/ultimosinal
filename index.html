@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-<title>ÚLTIMO SINAL</title>
+<title>ÚLTIMO SINAL - CALIBRATION SUITE</title>
 <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -35,18 +35,25 @@ table.rank-tb th{color:var(--g);background:#111}
 
 #v-kb{position:absolute;bottom:15px;left:15px;display:none;grid-template-columns:repeat(3,calc(var(--u)*7));gap:calc(var(--u)*.8);z-index:4;opacity:0.6}
 #v-kb.active{display:grid}
-.vk-btn{background:rgba(0,0,0,0.6);border:1px solid var(--g);color:var(--g);display:flex;align-items:center;justify-content:center;height:calc(var(--u)*7);font-family:monospace;font-weight:bold;font- me:calc(var(--u)*2.5);border-radius:4px;touch-action:manipulation}
+.vk-btn{background:rgba(0,0,0,0.6);border:1px solid var(--g);color:var(--g);display:flex;align-items:center;justify-content:center;height:calc(var(--u)*7);font-family:monospace;font-weight:bold;font-size:calc(var(--u)*2.5);border-radius:4px;touch-action:manipulation}
 .vk-btn:active{background:var(--g);color:#000}
 
-/* INTERFACE DO MODO CONTROLE/GIROSCÓPIO NO CELULAR */
-#joy-ui{position:fixed;inset:0;background:#05080a;display:none;flex-direction:column;justify-content:space-around;align-items:center;padding:5vw;z-index:99999;touch-action:none;box-sizing:border-box}
-.joy-title{text-align:center;color:var(--g);letter-spacing:0.2em;font-size:1.1rem;font-family:sans-serif}
-#btn-calibrate{background:var(--g);color:#000;font-weight:bold;padding:15px 25px;border-radius:8px;font-size:1rem;letter-spacing:1px;border:none;box-shadow:0 0 15px var(--g);margin:10px 0}
-#joy-fire{width:60vw;height:60vw;max-width:240px;max-height:240px;background:rgba(255,42,61,0.25);border:3px solid var(--r);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--r);font-size:1.5rem;font-weight:bold;letter-spacing:0.1em;box-shadow:0 0 25px rgba(255,42,61,0.4);font-family:sans-serif}
-#joy-fire:active{background:var(--r);color:#000}
-#joy-call{background:var(--r);color:#000;padding:20px;text-align:center;font-weight:bold;letter-spacing:2px;display:none;border-radius:8px;animation:rg .4s infinite;font-size:1.2rem;font-family:sans-serif;width:100%}
+/* TELA DE CONTROLE E CALIBRAÇÃO NO CELULAR */
+#joy-ui{position:fixed;inset:0;background:#05080a;display:none;flex-direction:column;justify-content:space-between;align-items:center;padding:5vw;z-index:99999;touch-action:none;box-sizing:border-box;color:#fff;font-family:sans-serif;text-align:center}
+.calib-card{background:rgba(255,255,255,0.05);border:1px solid #333;border-radius:12px;padding:20px;width:100%;max-width:340px;box-sizing:border-box}
+.calib-card h3{margin:0 0 10px 0;color:var(--g);letter-spacing:1px}
+.calib-card p{font-size:0.9rem;line-height:1.4;color:#ccc;margin-bottom:15px}
+.calib-btn{background:var(--g);color:#000;font-weight:bold;padding:12px 20px;border-radius:6px;border:none;width:100%;font-size:1rem;cursor:pointer;box-shadow:0 0 10px var(--g)}
+.calib-btn.sec{background:#333;color:#fff;box-shadow:none;margin-top:8px}
 
-/* TELA DE CUTSCENES */
+/* ÁREA DE TESTE VISUAL DA MIRA NO CELULAR */
+#test-box{width:100%;height:140px;background:#000;border:1px solid var(--g);border-radius:8px;position:relative;margin:15px 0;overflow:hidden}
+#test-crosshair{width:16px;height:16px;border:2px solid var(--g);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 8px var(--g)}
+
+#joy-fire{width:100%;height:100px;background:rgba(255,42,61,0.25);border:2px solid var(--r);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--r);font-size:1.3rem;font-weight:bold;letter-spacing:2px;box-shadow:0 0 15px rgba(255,42,61,0.3)}
+#joy-fire:active{background:var(--r);color:#000}
+#joy-call{background:var(--r);color:#000;padding:15px;text-align:center;font-weight:bold;letter-spacing:2px;display:none;border-radius:8px;animation:rg .4s infinite;font-size:1.1rem;margin-bottom:10px;width:100%}
+
 #cutscene-overlay{position:absolute;inset:0;background:#000;display:none;flex-direction:column;justify-content:center;align-items:center;padding:8%;z-index:15;color:#e8fff0;font-family:Georgia,serif}
 .cs-text{font-size:calc(var(--u)*3.2);line-height:1.6;letter-spacing:0.05em;color:#cfd8cf;max-width:35em;text-shadow:0 0 10px rgba(57,255,122,0.3);min-height:120px}
 .cs-skip{margin-top:30px;font-size:calc(var(--u)*2.2);color:#666;letter-spacing:0.2em;animation:pulse 1.5s infinite}
@@ -62,7 +69,6 @@ table.rank-tb th{color:var(--g);background:#111}
 <div id="call"><small>CHAMADA RECEBIDA</small><b>MÃE</b><span>Enter, Toque ou Botão do Celular</span></div>
 <div id="ov"></div>
 
-<!-- Cutscenes Overlay -->
 <div id="cutscene-overlay">
   <div class="cs-text" id="cs-text-content"></div>
   <div class="cs-skip">[ Pressione ENTER ou TOQUE para continuar ]</div>
@@ -75,12 +81,30 @@ table.rank-tb th{color:var(--g);background:#111}
 </div>
 </div>
 
-<!-- Interface de Giroscópio / Mira no Celular -->
+<!-- INTERFACE DO CELULAR COM TUTORIAL E TESTE -->
 <div id="joy-ui">
-  <div class="joy-title">ÚLTIMO SINAL :: MIRA POR SENSOR</div>
-  <button id="btn-calibrate">CALIBRAR MIRA (CENTRO DA TELA)</button>
-  <div id="joy-call">ATENDER CHAMADA DA MÃE</div>
-  <div id="joy-fire">ATIRAR</div>
+  <div class="calib-card" id="card-step1">
+    <h3>PASSO 1: CALIBRAÇÃO</h3>
+    <p>Apunte o celular para o <b>centro da tela do seu PC</b> como se fosse uma lanterna.</p>
+    <button class="calib-btn" id="btn-calib-now">CALIBRAR CENTRO</button>
+  </div>
+
+  <div class="calib-card" id="card-step2" style="display:none">
+    <h3>PASSO 2: TESTAR MIRA</h3>
+    <p>Incline o celular. Veja se a mira responde bem dentro da caixa abaixo:</p>
+    <div id="test-box"><div id="test-crosshair"></div></div>
+    <div style="display:flex;gap:5px">
+      <button class="calib-btn sec" id="btn-sens">SENS: <span id="sens-val">NORMAL</span></button>
+      <button class="calib-btn sec" id="btn-recalib">RECALIBRAR</button>
+    </div>
+    <button class="calib-btn" id="btn-start-game" style="margin-top:10px">MIRA PRONTA! JOGAR</button>
+  </div>
+
+  <div id="game-controls" style="display:none;width:100%;max-width:340px">
+    <div id="joy-call">ATENDER CHAMADA DA MÃE</div>
+    <div id="joy-fire">GATILHO / ATIRAR</div>
+    <button class="calib-btn sec" id="btn-recalib-ingame" style="margin-top:15px">RECALIBRAR MIRA</button>
+  </div>
 </div>
 
 <script>
@@ -93,37 +117,33 @@ let st='menu',conn=false,P,E=[],B=[],EB=[],PT=[],ph=0,pt=0,lt=0,lnI=0,ii=0,ft=0,
 const keys={},aim={x:480,y:270,use:false},tp={},movv={x:0,y:0};let fireP=false;
 
 let peer=null,peerConn=null,isControllerMode=false,roomCode='';
-let gyroCalib={beta:0,gamma:0},gyroCurrent={beta:0,gamma:0};
+let gyroCalib={beta:0,gamma:0},gyroCurrent={beta:0,gamma:0},sensMult=1.0;
 
 const fmt=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
 const hhmm=()=>new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
 const batTxt=()=>bat==='n/d'?'Seu aparelho está quase sem forças. Eu cuido dele agora.':'Seu aparelho está com '+bat+' de bateria. Eu cuido dele agora.';
 const vib=p=>{if(conn&&navigator.vibrate)try{navigator.vibrate(p)}catch(e){}};
 
-/* ================= ENREDO E CUTSCENES ================= */
 const ENREDO = {
   prologo: [
     "03:14 AM. O silêncio do seu quarto foi quebrado por um brilho estranho vindo da tela.",
     "Um aplicativo chamado 'MÃE' foi instalado sozinho no seu dispositivo.",
-    "Não é um vírus comum... Ele conhece sua rotina. Sabe a hora que você dorme. Ouve seus passos.",
+    "Não é um vírus comum... Ele conhece sua rotina. Sabe a hora que você dorme.",
     "Segure a luz da lanterna. As sombras na sua sala já não são apenas imaginação..."
   ],
   ato1_fim: [
     "Os primeiros 'Ecos' se desfizeram em poeira estática.",
     "Mas o sinal está ficando mais forte. As luzes da casa começam a piscar.",
-    "A entidade MÃE está usando a rede Wi-Fi e os alto-falantes para se materializar...",
     "Não olhe para trás. Ela aprende com o seu medo."
   ],
   ato2_fim: [
     "O contágio atingiu o nível crítico.",
     "Sua mente está cansada e o aparelho esquenta em suas mãos.",
-    "A frequência de rádio finalmente ganhou uma forma física.",
-    "A própria MÃE se manifestou na tela central. destrua a fonte do sinal!"
+    "A própria MÃE se manifestou na tela central. Destrua a fonte do sinal!"
   ],
   epilogo: [
-    "O núcleo da frequência colapsou. A tela do dispositivo finalmente apagou.",
+    "O núcleo da frequência colapsou. A tela do dispositivo apagou.",
     "A luz do sol começa a entrar pela janela do seu quarto.",
-    "Pela primeira vez em horas... o silêncio é totalmente seu.",
     "Você sobreviveu à noite. O Sinal foi interrompido."
   ]
 };
@@ -131,10 +151,7 @@ const ENREDO = {
 let currentCutsceneKey=null, csStep=0, csTypingInterval=null, csNextCallback=null;
 
 function playCutscene(key, onComplete){
-  currentCutsceneKey=key;
-  csStep=0;
-  csNextCallback=onComplete;
-  st='cutscene';
+  currentCutsceneKey=key;csStep=0;csNextCallback=onComplete;st='cutscene';
   csOv.style.display='flex';
   showNextCsLine();
 }
@@ -154,9 +171,7 @@ function showNextCsLine(){
   csTypingInterval=setInterval(()=>{
     csTxt.textContent+=fullText[i];
     i++;
-    if(i>=fullText.length){
-      clearInterval(csTypingInterval);
-    }
+    if(i>=fullText.length)clearInterval(csTypingInterval);
   }, 28);
 }
 
@@ -170,7 +185,6 @@ function advanceCutscene(){
     showNextCsLine();
   }
 }
-
 csOv.onclick=advanceCutscene;
 
 function say(t){sub.textContent=t;sub.style.opacity=1;subT=Math.max(4,t.length*.075);
@@ -238,14 +252,13 @@ function renderRankTable(){
   return h+'</table>';
 }
 
-/* PeerJS - Host (PC) */
 function initHostPeer(){
   const code=Math.floor(1000+Math.random()*9000).toString();
   roomCode=code;
   peer=new Peer('US-HOST-'+code);
   
   ov.innerHTML=`<h1>CONECTAR CELULAR</h1>
-  <p>Escaneie o QR Code abaixo com o celular para usar a <b>Mira por Giroscópio</b>:</p>
+  <p>Escaneie o QR Code abaixo com o celular para abrir a calibração:</p>
   <div id="qrcode"></div>
   <p>Código da Sala: <b style="font-size:1.4em;letter-spacing:3px">${code}</b></p>
   <div class="row">
@@ -268,7 +281,6 @@ function initHostPeer(){
   });
 }
 
-/* PeerJS - Client (Celular) */
 function initClientPeer(targetCode){
   isControllerMode=true;
   $('box').style.display='none';
@@ -293,17 +305,16 @@ function initClientPeer(targetCode){
     });
   });
   
-  setupGyroEvents();
+  setupCalibrationAndEvents();
 }
 
 function handleRemoteData(d){
   if(d.type==='gyroAim'){
     aim.use=true;
-    // Mapeamento dos ângulos do Giroscópio para a tela
-    const deltaGamma = d.gamma - d.calibGamma;
-    const deltaBeta = d.beta - d.calibBeta;
-    aim.x = cl(W/2 + deltaGamma * 28, 0, W);
-    aim.y = cl(H/2 + deltaBeta * 22, 0, H);
+    const deltaGamma = (d.gamma - d.calibGamma) * d.sens;
+    const deltaBeta = (d.beta - d.calibBeta) * d.sens;
+    aim.x = cl(W/2 + deltaGamma * 22, 0, W);
+    aim.y = cl(H/2 + deltaBeta * 18, 0, H);
   }else if(d.type==='fire'){
     fireP=d.val;
   }else if(d.type==='answer'){
@@ -311,42 +322,88 @@ function handleRemoteData(d){
   }
 }
 
-/* GIROSCÓPIO DO CELULAR */
-function setupGyroEvents(){
-  const btnCalib = $('btn-calibrate');
+/* SISTEMA COMPLETO DE TUTORIAL E TESTE NO CELULAR */
+function setupCalibrationAndEvents(){
+  const step1 = $('card-step1');
+  const step2 = $('card-step2');
+  const controls = $('game-controls');
+  const crosshair = $('test-crosshair');
+
+  const btnCalibNow = $('btn-calib-now');
+  const btnStartGame = $('btn-start-game');
+  const btnRecalib = $('btn-recalib');
+  const btnRecalibIngame = $('btn-recalib-ingame');
+  const btnSens = $('btn-sens');
+  const sensVal = $('sens-val');
   const btnFire = $('joy-fire');
   const btnCall = $('joy-call');
 
-  btnCalib.addEventListener('click', ()=>{
+  const doCalibrate = () => {
     gyroCalib.beta = gyroCurrent.beta;
     gyroCalib.gamma = gyroCurrent.gamma;
-    if(navigator.vibrate)navigator.vibrate([50,50,50]);
-    btnCalib.textContent = "CALIBRADO! RECALIBRAR";
+    if(navigator.vibrate)navigator.vibrate([40,40]);
+  };
+
+  btnCalibNow.addEventListener('click', ()=>{
+    doCalibrate();
+    step1.style.display='none';
+    step2.style.display='block';
+  });
+
+  btnRecalib.addEventListener('click', ()=>{
+    doCalibrate();
+  });
+
+  btnRecalibIngame.addEventListener('click', ()=>{
+    doCalibrate();
+  });
+
+  btnSens.addEventListener('click', ()=>{
+    if(sensMult === 1.0){
+      sensMult = 1.6; sensVal.textContent = "ALTA";
+    } else if(sensMult === 1.6){
+      sensMult = 0.6; sensVal.textContent = "BAIXA";
+    } else {
+      sensMult = 1.0; sensVal.textContent = "NORMAL";
+    }
+  });
+
+  btnStartGame.addEventListener('click', ()=>{
+    step2.style.display='none';
+    controls.style.display='block';
   });
 
   const handleOrientation = (e) => {
-    gyroCurrent.beta = e.beta || 0;   // Inclinação Frente/Trás
-    gyroCurrent.gamma = e.gamma || 0; // Inclinação Esquerda/Direita
-    
+    gyroCurrent.beta = e.beta || 0;
+    gyroCurrent.gamma = e.gamma || 0;
+
+    // Atualiza crosshair de teste na tela do celular
+    if(step2.style.display !== 'none'){
+      const dg = (gyroCurrent.gamma - gyroCalib.gamma) * sensMult;
+      const db = (gyroCurrent.beta - gyroCalib.beta) * sensMult;
+      const testX = cl(50 + dg * 3, 5, 95);
+      const testY = cl(50 + db * 3, 5, 95);
+      crosshair.style.left = testX + '%';
+      crosshair.style.top = testY + '%';
+    }
+
     if(peerConn){
       peerConn.send({
         type: 'gyroAim',
         beta: gyroCurrent.beta,
         gamma: gyroCurrent.gamma,
         calibBeta: gyroCalib.beta,
-        calibGamma: gyroCalib.gamma
+        calibGamma: gyroCalib.gamma,
+        sens: sensMult
       });
     }
   };
 
   if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-    btnCalib.addEventListener('click', () => {
-      DeviceOrientationEvent.requestPermission()
-        .then(response => {
-          if (response === 'granted') {
-            window.addEventListener('deviceorientation', handleOrientation);
-          }
-        });
+    btnCalibNow.addEventListener('click', () => {
+      DeviceOrientationEvent.requestPermission().then(r => {
+        if (r === 'granted') window.addEventListener('deviceorientation', handleOrientation);
+      });
     });
   } else {
     window.addEventListener('deviceorientation', handleOrientation);
@@ -370,9 +427,8 @@ function setupGyroEvents(){
 function menu(){
  st='menu';try{speechSynthesis.cancel()}catch(e){}sub.style.opacity=0;call.style.display='none';vkb.classList.remove('active');
  ov.style.display='flex';ov.style.background='rgba(0,0,0,.88)';
- ov.innerHTML=`<h1>ÚLTIMO SINAL</h1><h2>EDITION: CUTSCENES & GIROSCÓPIO</h2>
- <p>Uma IA tomou o controle do seu aparelho. Viva uma experiência de terror interativo com história e cutscenes.</p>
- <p><b>Dica de Jogabilidade:</b> Conecte o celular, coloque ele no centro da tela e calibre para mirá-lo diretamente nos inimigos enquanto anda no Teclado Numérico (8, 4, 6, 2)!</p>
+ ov.innerHTML=`<h1>ÚLTIMO SINAL</h1><h2>CALIBRATION & GYRO EDITION</h2>
+ <p>Use o celular como mira apontando pra tela e ande usando o Teclado Numérico (8, 4, 6, 2)!</p>
  <div class="row">
    <div class="btn on" id="b1">JOGAR NESTE DISPOSITIVO</div>
    <div class="btn" id="b-pair">CONECTAR CELULAR COMO MIRA</div>
@@ -400,10 +456,7 @@ function start(c){
  try{speechSynthesis.cancel()}catch(e){}
  P={x:480,y:340,hp:100,cd:0,inv:0,ang:-1.57};E=[];B=[];EB=[];PT=[];boss=null;kills=0;tot=0;ph=0;pt=0;ii=0;card=null;callSt=0;slow=1;flash=0;bossMid=false;
  call.style.display='none';ov.style.display='none';sub.style.opacity=0;st='intro';setDrone();
- 
- if(!isControllerMode){
-   vkb.classList.add('active');
- }
+ if(!isControllerMode) vkb.classList.add('active');
 }
 
 function act(n){
@@ -418,7 +471,6 @@ function spawn(){
  const s=Math.floor(rnd(0,4)),m=40;let x,y;
  if(s===0){x=rnd(0,W);y=-m}else if(s===1){x=W+m;y=rnd(0,H)}else if(s===2){x=rnd(0,W);y=H+m}else{x=-m;y=rnd(0,H)}
  const f=ph>=2&&Math.random()<.35;
- // INIMIGOS COM VELOCIDADE AJUSTADA PARA MELHOR JOGABILIDADE
  E.push({x,y,fast:f,hp:f?2:1,sp:f?90+rnd(0,20):45+ph*10+rnd(0,12),ph:rnd(0,6),a:0});
 }
 
@@ -448,24 +500,15 @@ function endScreen(win){
 }
 
 function autoAim(){
-  let target=null;
-  let minDist=Infinity;
-  if(boss&&boss.open&&bossHp>0){
-    target=boss;
-    minDist=Math.hypot(boss.x-P.x,boss.y-P.y);
-  }
+  let target=null;let minDist=Infinity;
+  if(boss&&boss.open&&bossHp>0){target=boss;minDist=Math.hypot(boss.x-P.x,boss.y-P.y)}
   for(const e of E){
     if(e.hp>0){
       const d=Math.hypot(e.x-P.x,e.y-P.y);
-      if(d<minDist){
-        minDist=d;
-        target=e;
-      }
+      if(d<minDist){minDist=d;target=e}
     }
   }
-  if(target){
-    P.ang=Math.atan2(target.y-P.y,target.x-P.x);
-  }
+  if(target)P.ang=Math.atan2(target.y-P.y,target.x-P.x);
 }
 
 function update(dt){
@@ -484,24 +527,19 @@ function update(dt){
  if(ph!==2||callSt===2)lt+=dt;
  const ls=LN[ph];while(ls&&lnI<ls.length&&lt>=ls[lnI][0]){const t=ls[lnI][1];say(typeof t==='function'?t():t);lnI++}
  
- /* DISPARO DE CUTSCENES DE TRANSIÇÃO DE ATO */
- if(ph===1&&pt>=46){
-   playCutscene('ato1_fim', ()=>act(2));
- }else if(ph===2&&pt>=52){
-   playCutscene('ato2_fim', ()=>act(3));
- }
+ if(ph===1&&pt>=46)playCutscene('ato1_fim', ()=>act(2));
+ else if(ph===2&&pt>=52)playCutscene('ato2_fim', ()=>act(3));
 
  if(ph===2&&callSt===0&&pt>=5){callSt=1;callT=0;ringT=0;call.style.display='block';if(peerConn)peerConn.send({type:'callState',val:'ring'})}
  if(callSt===1){callT+=dt;ringT-=dt;if(ringT<=0){sfx('ring');vib([300,120,300]);ringT=1.2}if(callT>7)answer()}
  P.inv-=dt;P.cd-=dt;
  
- /* MOVIMENTAÇÃO MELHORADA DO JOGADOR */
  let mx=movv.x, my=movv.y;
  mx+=(keys['Numpad6']||keys['ArrowRight']||keys['KeyD']?1:0)-(keys['Numpad4']||keys['ArrowLeft']||keys['KeyA']?1:0);
  my+=(keys['Numpad2']||keys['ArrowDown']||keys['KeyS']?1:0)-(keys['Numpad8']||keys['ArrowUp']||keys['KeyW']?1:0);
  
  const m=Math.hypot(mx,my);if(m>1){mx/=m;my/=m}
- P.x=cl(P.x+mx*260*dt,20,W-20); // VELOCIDADE AUMENTADA PARA 260
+ P.x=cl(P.x+mx*260*dt,20,W-20);
  P.y=cl(P.y+my*260*dt,70,H-30);
  
  if(aim.use){
@@ -515,8 +553,8 @@ function update(dt){
  const isFiring = fireP || keys.Space || keys.KeyJ || keys['Numpad5'];
  if(isFiring && P.cd<=0){
    const c=Math.cos(P.ang),s=Math.sin(P.ang);
-   B.push({x:P.x+c*14,y:P.y+s*14,vx:c*750,vy:s*750,l:.75}); // TIRO MAIS RÁPIDO
-   P.cd=.12; // RECARGA MAIS RÁPIDA
+   B.push({x:P.x+c*14,y:P.y+s*14,vx:c*750,vy:s*750,l:.75});
+   P.cd=.12;
    sfx('shot');
  }
  
@@ -569,7 +607,6 @@ function world(){
  if(boss)drawBoss();
  for(const b of EB){X.globalAlpha=.6;X.drawImage(glow('255,42,61'),b.x-14,b.y-14,28,28);X.globalAlpha=1;X.fillStyle='#ffd0d4';X.beginPath();X.arc(b.x,b.y,3.5,0,6.28);X.fill()}
  
- // DESENHA O RETÍCULO DE MIRA QUANDO USAR GIROSCÓPIO
  if(aim.use){
    X.strokeStyle=G;X.lineWidth=1.5;
    X.beginPath();X.arc(aim.x,aim.y,8,0,6.28);X.stroke();
