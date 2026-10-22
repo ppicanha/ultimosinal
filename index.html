@@ -38,14 +38,15 @@ table.rank-tb th{color:var(--g);background:#111}
 .vk-btn{background:rgba(0,0,0,0.6);border:1px solid var(--g);color:var(--g);display:flex;align-items:center;justify-content:center;height:calc(var(--u)*7);font-family:monospace;font-weight:bold;font-size:calc(var(--u)*2.5);border-radius:4px;touch-action:manipulation}
 .vk-btn:active{background:var(--g);color:#000}
 
-#joy-ui{position:absolute;inset:0;background:#05080a;display:none;flex-direction:column;justify-content:space-between;padding:4%;z-index:20;touch-action:none}
-.joy-title{text-align:center;color:var(--g);letter-spacing:0.2em;font-size:calc(var(--u)*3);margin-bottom:10px}
-.joy-zone{display:flex;justify-content:space-between;align-items:center;flex:1}
-#joy-pad{width:calc(var(--u)*35);height:calc(var(--u)*35);background:rgba(255,255,255,0.05);border:2px dashed #333;border-radius:50%;position:relative;touch-action:none}
-#joy-stick{width:calc(var(--u)*14);height:calc(var(--u)*14);background:var(--g);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 15px var(--g)}
-#joy-fire{width:calc(var(--u)*35);height:calc(var(--u)*35);background:rgba(255,42,61,0.2);border:2px solid var(--r);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--r);font-size:calc(var(--u)*3);font-weight:bold;letter-spacing:0.1em;box-shadow:0 0 20px rgba(255,42,61,0.3)}
+/* Interface DEDICADA DE CONTROLE PARA O CELULAR */
+#joy-ui{position:fixed;inset:0;background:#05080a;display:none;flex-direction:column;justify-content:space-between;padding:5vw;z-index:99999;touch-action:none;box-sizing:border-box}
+.joy-title{text-align:center;color:var(--g);letter-spacing:0.2em;font-size:1.2rem;margin-bottom:10px;font-family:sans-serif}
+.joy-zone{display:flex;justify-content:space-around;align-items:center;flex:1;width:100%}
+#joy-pad{width:40vw;height:40vw;max-width:180px;max-height:180px;background:rgba(255,255,255,0.05);border:2px dashed #333;border-radius:50%;position:relative;touch-action:none}
+#joy-stick{width:16vw;height:16vw;max-width:70px;max-height:70px;background:var(--g);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 15px var(--g)}
+#joy-fire{width:40vw;height:40vw;max-width:180px;max-height:180px;background:rgba(255,42,61,0.2);border:2px solid var(--r);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--r);font-size:1.2rem;font-weight:bold;letter-spacing:0.1em;box-shadow:0 0 20px rgba(255,42,61,0.3);font-family:sans-serif}
 #joy-fire:active{background:var(--r);color:#000}
-#joy-call{background:var(--r);color:#000;padding:15px;text-align:center;font-weight:bold;letter-spacing:2px;display:none;border-radius:8px;animation:rg .4s infinite}
+#joy-call{background:var(--r);color:#000;padding:20px;text-align:center;font-weight:bold;letter-spacing:2px;display:none;border-radius:8px;animation:rg .4s infinite;font-size:1.2rem;font-family:sans-serif;margin-bottom:15px}
 
 @media (prefers-reduced-motion:reduce){.gl,#call,#joy-call{animation:none}}
 </style>
@@ -62,15 +63,15 @@ table.rank-tb th{color:var(--g);background:#111}
   <div class="vk-btn" id="vk-4">4◄</div><div class="vk-btn" id="vk-5">5🎯</div><div class="vk-btn" id="vk-6">6►</div>
   <div></div><div class="vk-btn" id="vk-2">2▼</div><div></div>
 </div>
+</div>
 
 <div id="joy-ui">
-  <div class="joy-title">ÚLTIMO SINAL :: CONTROLE</div>
+  <div class="joy-title">ÚLTIMO SINAL :: CONTROLE REMOTE</div>
   <div id="joy-call">ATENDER CHAMADA DA MÃE</div>
   <div class="joy-zone">
     <div id="joy-pad"><div id="joy-stick"></div></div>
     <div id="joy-fire">ATIRAR</div>
   </div>
-</div>
 </div>
 
 <script>
@@ -160,8 +161,9 @@ function initHostPeer(){
   peer=new Peer('US-HOST-'+code);
   
   ov.innerHTML=`<h1>CONECTAR CELULAR</h1>
-  <p>Escaneie o QR Code abaixo com a câmera do celular ou abra este mesmo site no seu celular e digite o código: <b style="font-size:1.4em;letter-spacing:3px">${code}</b></p>
+  <p>Escaneie o QR Code abaixo com a câmera do celular para abrir o controle:</p>
   <div id="qrcode"></div>
+  <p>Código da Sala: <b style="font-size:1.4em;letter-spacing:3px">${code}</b></p>
   <div class="row">
     <div class="btn" id="b-back">VOLTAR</div>
   </div>`;
@@ -185,6 +187,7 @@ function initHostPeer(){
 function initClientPeer(targetCode){
   isControllerMode=true;
   $('box').style.display='none';
+  ov.style.display='none';
   joyUi.style.display='flex';
   
   peer=new Peer();
@@ -227,13 +230,8 @@ function setupJoystickEvents(){
   const pad=$('joy-pad'),stick=$('joy-stick'),btnFire=$('joy-fire'),btnCall=$('joy-call');
   let padBounds=null;
   
-  pad.addEventListener('touchstart',e=>{
-    padBounds=pad.getBoundingClientRect();
-  },{passive:true});
-  
-  pad.addEventListener('touchmove',e=>{
+  const updateTouchMove=(t)=>{
     if(!padBounds||!peerConn)return;
-    const t=e.touches[0];
     const cx=padBounds.left+padBounds.width/2;
     const cy=padBounds.top+padBounds.height/2;
     let dx=t.clientX-cx;
@@ -248,6 +246,15 @@ function setupJoystickEvents(){
     const ny=dy/maxR;
     peerConn.send({type:'move',x:nx,y:ny});
     peerConn.send({type:'aim',x:nx,y:ny});
+  };
+
+  pad.addEventListener('touchstart',e=>{
+    padBounds=pad.getBoundingClientRect();
+    updateTouchMove(e.touches[0]);
+  },{passive:true});
+  
+  pad.addEventListener('touchmove',e=>{
+    updateTouchMove(e.touches[0]);
   },{passive:true});
   
   const resetPad=()=>{
@@ -258,11 +265,13 @@ function setupJoystickEvents(){
   pad.addEventListener('touchcancel',resetPad);
   
   btnFire.addEventListener('touchstart',e=>{
+    e.preventDefault();
     if(peerConn)peerConn.send({type:'fire',val:true});
-  },{passive:true});
+  });
   btnFire.addEventListener('touchend',e=>{
+    e.preventDefault();
     if(peerConn)peerConn.send({type:'fire',val:false});
-  },{passive:true});
+  });
   
   btnCall.addEventListener('click',()=>{
     if(peerConn)peerConn.send({type:'answer'});
@@ -275,8 +284,8 @@ function menu(){
  ov.style.display='flex';ov.style.background='rgba(0,0,0,.85)';
  ov.innerHTML=`<h1>ÚLTIMO SINAL</h1><h2>UMA EXPERIÊNCIA INTERATIVA DE TERROR</h2>
  <p>Uma IA tomou o controle. Use fones de ouvido. Ela usará voz, vibração e dados locais para te encurralar.</p>
- <p><b>Controles:</b> Teclado (WASD / Setas / <b>Num 8 4 6 2 e 5</b>) · Mouse/Toque · Celular via WebRTC</p>
- <p><i>Nota: Jogando sem celular, a mira será travada automaticamente no inimigo mais próximo!</i></p>
+ <p><b>Controles:</b> Teclado (WASD / Setas / <b>Num 8 4 6 2 e 5</b>) · Celular via WebRTC</p>
+ <p><i>Aviso: Ao conectar o celular, o teclado numérico local e o teclado virtual são desativados.</i></p>
  <div class="row">
    <div class="btn on" id="b1">JOGAR NESTE DISPOSITIVO</div>
    <div class="btn" id="b-pair">CONECTAR CELULAR COMO CONTROLE</div>
@@ -304,7 +313,12 @@ function start(c){
  try{speechSynthesis.cancel()}catch(e){}
  P={x:480,y:340,hp:100,cd:0,inv:0,ang:-1.57};E=[];B=[];EB=[];PT=[];boss=null;kills=0;tot=0;ph=0;pt=0;ii=0;card=null;callSt=0;slow=1;flash=0;bossMid=false;
  call.style.display='none';ov.style.display='none';sub.style.opacity=0;st='intro';setDrone();
- if(!isControllerMode)vkb.classList.add('active');
+ 
+ if(!isControllerMode && !peerConn){
+   vkb.classList.add('active');
+ }else{
+   vkb.classList.remove('active');
+ }
 }
 
 function act(n){
@@ -382,8 +396,14 @@ function update(dt){
  if(callSt===1){callT+=dt;ringT-=dt;if(ringT<=0){sfx('ring');vib([300,120,300]);ringT=1.2}if(callT>7)answer()}
  P.inv-=dt;P.cd-=dt;
  
- let mx=(keys['Numpad6']||keys['ArrowRight']||keys['KeyD']?1:0)-(keys['Numpad4']||keys['ArrowLeft']||keys['KeyA']?1:0)+movv.x;
- let my=(keys['Numpad2']||keys['ArrowDown']||keys['KeyS']?1:0)-(keys['Numpad8']||keys['ArrowUp']||keys['KeyW']?1:0)+movv.y;
+ let mx=movv.x, my=movv.y;
+ 
+ /* SE NÃO HOUVER CELULAR CONECTADO, HABILITA TECLADO LOCAL */
+ if(!peerConn){
+   mx+=(keys['Numpad6']||keys['ArrowRight']||keys['KeyD']?1:0)-(keys['Numpad4']||keys['ArrowLeft']||keys['KeyA']?1:0);
+   my+=(keys['Numpad2']||keys['ArrowDown']||keys['KeyS']?1:0)-(keys['Numpad8']||keys['ArrowUp']||keys['KeyW']?1:0);
+ }
+ 
  const m=Math.hypot(mx,my);if(m>1){mx/=m;my/=m}
  P.x=cl(P.x+mx*195*dt,20,W-20);P.y=cl(P.y+my*195*dt,70,H-30);
  
@@ -393,7 +413,14 @@ function update(dt){
    if(aim.use)P.ang=Math.atan2(aim.y-P.y,aim.x-P.x);else if(m>.1)P.ang=Math.atan2(my,mx);
  }
 
- if((fireP||keys.Space||keys.KeyJ||keys['Numpad5'])&&P.cd<=0){const c=Math.cos(P.ang),s=Math.sin(P.ang);B.push({x:P.x+c*14,y:P.y+s*14,vx:c*680,vy:s*680,l:.75});P.cd=.15;sfx('shot')}
+ const isFiring = fireP || (!peerConn && (keys.Space||keys.KeyJ||keys['Numpad5']));
+ if(isFiring && P.cd<=0){
+   const c=Math.cos(P.ang),s=Math.sin(P.ang);
+   B.push({x:P.x+c*14,y:P.y+s*14,vx:c*680,vy:s*680,l:.75});
+   P.cd=.15;
+   sfx('shot');
+ }
+ 
  hb-=dt;if(P.hp<45&&hb<=0){sfx('thump');vib([40,60,40]);hb=.5+P.hp/80}
  if(ph<=2){spawnT-=d;if(pt>3.5&&callSt!==1&&spawnT<=0&&E.length<(ph===1?12:16)){spawn();spawnT=ph===1?Math.max(.55,1.2-pt*.015):Math.max(.35,.7-pt*.006)}}
  if(ph===3){boss.x=480+Math.sin(time*.6)*140;boss.y=105+Math.sin(time*.9)*10;boss.open=pt>4.5;
@@ -491,6 +518,7 @@ function normalizeNumpadCode(e){
 }
 
 addEventListener('keydown',e=>{
+ if(peerConn)return; // DESATIVA CONTROLE LOCAL SE CELULAR ESTIVER CONECTADO
  const mappedCode=normalizeNumpadCode(e);
  if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)||mappedCode.startsWith('Numpad'))e.preventDefault();
  keys[mappedCode]=1;audio();
@@ -504,6 +532,7 @@ addEventListener('keydown',e=>{
 });
 
 addEventListener('keyup',e=>{
+ if(peerConn)return;
  const mappedCode=normalizeNumpadCode(e);
  keys[mappedCode]=0;
 });
@@ -512,8 +541,12 @@ const setupVirtualKeypad=()=>{
   const bindVk=(id,code)=>{
     const el=$(id);
     if(!el)return;
-    const start=e=>{e.preventDefault();keys[code]=1;audio();if(code==='Numpad5'&&callSt===1)answer()};
-    const end=e=>{e.preventDefault();keys[code]=0};
+    const start=e=>{
+      if(peerConn)return;
+      e.preventDefault();keys[code]=1;audio();
+      if(code==='Numpad5'&&callSt===1)answer();
+    };
+    const end=e=>{if(peerConn)return;e.preventDefault();keys[code]=0};
     el.addEventListener('touchstart',start);el.addEventListener('touchend',end);
     el.addEventListener('mousedown',start);el.addEventListener('mouseup',end);
   };
@@ -526,15 +559,19 @@ const setupVirtualKeypad=()=>{
 setupVirtualKeypad();
 
 function cp(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
-cv.addEventListener('pointerdown',e=>{audio();const p=cp(e);if(callSt===1){answer();return}
+cv.addEventListener('pointerdown',e=>{
+ if(peerConn)return;
+ audio();const p=cp(e);if(callSt===1){answer();return}
  if(e.pointerType==='mouse'){aim.x=p.x;aim.y=p.y;aim.use=true;fireP=true}
  else if(p.x<W/2)tp[e.pointerId]={r:'m',sx:p.x,sy:p.y};
  else{tp[e.pointerId]={r:'a'};aim.x=p.x;aim.y=p.y;aim.use=true;fireP=true}
  try{cv.setPointerCapture(e.pointerId)}catch(x){}});
-cv.addEventListener('pointermove',e=>{const p=cp(e),t=tp[e.pointerId];
+cv.addEventListener('pointermove',e=>{
+ if(peerConn)return;
+ const p=cp(e),t=tp[e.pointerId];
  if(e.pointerType==='mouse'){aim.x=p.x;aim.y=p.y;aim.use=true}
  else if(t){if(t.r==='m'){const dx=p.x-t.sx,dy=p.y-t.sy,m=Math.hypot(dx,dy);if(m>8){const k=Math.min(1,m/50);movv.x=dx/m*k;movv.y=dy/m*k}else{movv.x=movv.y=0}}else{aim.x=p.x;aim.y=p.y}}});
-const up=e=>{if(e.pointerType==='mouse'){fireP=false;return}const t=tp[e.pointerId];if(!t)return;if(t.r==='m'){movv.x=movv.y=0}else fireP=false;delete tp[e.pointerId]};
+const up=e=>{if(peerConn)return;if(e.pointerType==='mouse'){fireP=false;return}const t=tp[e.pointerId];if(!t)return;if(t.r==='m'){movv.x=movv.y=0}else fireP=false;delete tp[e.pointerId]};
 cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);addEventListener('pointerup',e=>{if(e.pointerType==='mouse')fireP=false});
 
 let last=performance.now();
